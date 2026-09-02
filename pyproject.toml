@@ -8,14 +8,30 @@ authors = [
 dependencies = ["mplfinance>=0.12.10b0", "pyside6>=6.11.2", "matplotlib>=3.11.1"]
 requires-python = ">=3.12, <=3.14"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
 
 [build-system]
-requires = ["pdm-backend"]
+requires = ["pdm-backend", "cython>=3.0.0", "setuptools>=61.0.0", "wheel"]
 build-backend = "pdm.backend"
 
 [tool.pdm]
-distribution = false
+distribution = true
+package = false
+
+[tool.pdm.build]
+custom-hook =  "src/build.py"
+run-setuptools = true
+is-purelib = false
+package-dir = "src"
+includes = [
+    "src"
+]
+excludes = [
+    ".gitignore",
+    "**/*.c",
+    "**/*.cpp",
+]
 
 [tool.pyright]
 venvPath = "."
@@ -42,3 +58,9 @@ ignore = [
 
 [tool.ruff.format]  # https://docs.astral.sh/ruff/settings/#format
 quote-style = "double"
+
+[dependency-groups]
+dev = [
+    "setuptools>=84.0.0",
+    "cython>=3.3.0",
+]
